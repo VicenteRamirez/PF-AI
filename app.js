@@ -11,6 +11,9 @@ var flash = require('connect-flash');
 var validator = require('express-validator');
 var MongoStore = require('connect-mongo')(session);
 
+//IMPORTAR VARIABLES DE ENTORNO LOCALES
+require('dotenv').config({ path: 'variables.env' });
+
 var Handlebars = require('handlebars')
 const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
 
@@ -20,7 +23,7 @@ var userRoutes = require('./routes/user');
 
 var app = express();
 
-mongoose.connect('mongodb://localhost:27017/shopping');
+mongoose.connect(process.env.DB_URL);
 require('./config/passport');
 
 // view engine setup
@@ -76,4 +79,7 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
+//LEER LOCALHOST
+const host = process.env.HOST || '0.0.0.0';
+const port = process.env.PORT || 3000;
 module.exports = app;
